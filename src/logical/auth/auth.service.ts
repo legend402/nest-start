@@ -8,7 +8,10 @@ export class AuthService {
   constructor(
     private readonly userService: UserService,
     private readonly jwtService: JwtService,
-  ) {}
+  ) {
+    this.userService = userService;
+    this.jwtService = jwtService;
+  }
 
   async validateUser(
     username: string,
@@ -54,10 +57,11 @@ export class AuthService {
     const signState = {
       id: user.id,
       name: user.name,
-      authority: user.authority,
+      password: user.password
     };
     try {
       const token = this.jwtService.sign(signState);
+      console.log(token)
       return token;
     } catch {
       return '账号或密码错误';

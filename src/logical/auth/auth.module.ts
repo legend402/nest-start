@@ -9,7 +9,7 @@ import { LocalStrategy } from './local.strategy';
 
 @Module({
   imports: [
-    PassportModule.register({ defaultStrategy: 'jwt' }),
+    PassportModule,
     JwtModule.register({
       secret: jwtConstants.secret,
       signOptions: { expiresIn: '8h' }, // token 过期时效
