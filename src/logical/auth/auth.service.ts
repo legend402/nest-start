@@ -57,11 +57,11 @@ export class AuthService {
     const signState = {
       id: user.id,
       name: user.name,
-      password: user.password
+      password: user.password,
     };
     try {
       const token = this.jwtService.sign(signState);
-      console.log(token)
+      console.log(token);
       return token;
     } catch {
       return '账号或密码错误';

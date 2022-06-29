@@ -19,7 +19,9 @@ export class User {
   })
   password: string;
 
-  @Column()
+  @Column({
+    default: null,
+  })
   email: string;
 
   @Column({
@@ -29,6 +31,7 @@ export class User {
 
   @Column({
     type: 'int',
+    default: null,
   })
   age: number;
 

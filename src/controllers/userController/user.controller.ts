@@ -1,9 +1,9 @@
-import {Body, Controller, Get, Post} from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { omit } from 'lodash';
 import { User } from 'src/database/entity/user.entity';
 import { AuthService } from 'src/logical/auth/auth.service';
 import { UserService } from './user.service';
-import { Public } from "../../common/decorator/public.decorator";
+import { Public } from '../../common/decorator/public.decorator';
 
 @Controller('user')
 export class UserController {
@@ -32,7 +32,7 @@ export class UserController {
     );
     switch (code) {
       case 1:
-        const token = await this.authService.certificate(findUser)
+        const token = await this.authService.certificate(findUser);
         return {
           token,
           user: omit(findUser, ['password']),
