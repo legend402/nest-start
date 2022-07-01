@@ -5,12 +5,26 @@ export class DictDto {
   @PrimaryGeneratedColumn('rowid')
   id: number;
 
-  @Column()
+  @Column({
+    nullable: true,
+    comment: '字典项名称',
+  })
   dictName: string;
 
-  @Column()
+  @Column({
+    nullable: true,
+    unique: true,
+    comment: '字典项值',
+  })
   dictCode: string;
 
-  @Column()
+  @Column({
+    comment: '字典描述',
+  })
   dictDesc: string;
+
+  @Column({
+    comment: '当前字典组给子项的父级id',
+  })
+  pid: string;
 }

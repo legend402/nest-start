@@ -24,22 +24,22 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 exports.__esModule = true;
-exports.UserService = void 0;
+exports.DictService = void 0;
 var common_1 = require("@nestjs/common");
 var typeorm_1 = require("@nestjs/typeorm");
-var user_entity_1 = require("../../../../../../../src/database/entity/user.entity");
-var BaseService_1 = require("../../service/BaseService");
-var UserService = /** @class */ (function (_super) {
-    __extends(UserService, _super);
-    function UserService(userReq) {
-        var _this = _super.call(this, userReq) || this;
-        _this.userReq = userReq;
+var dict_entity_1 = require("../../../../../../../../src/database/entity/dict.entity");
+var BaseService_1 = require("../../../../../../../../src/service/BaseService");
+var DictService = /** @class */ (function (_super) {
+    __extends(DictService, _super);
+    function DictService(dictReq) {
+        var _this = _super.call(this, dictReq) || this;
+        _this.dictReq = dictReq;
         return _this;
     }
-    UserService = __decorate([
+    DictService = __decorate([
         (0, common_1.Injectable)(),
-        __param(0, (0, typeorm_1.InjectRepository)(user_entity_1.User))
-    ], UserService);
-    return UserService;
+        __param(0, (0, typeorm_1.InjectRepository)(dict_entity_1.DictDto))
+    ], DictService);
+    return DictService;
 }(BaseService_1.BaseService));
-exports.UserService = UserService;
+exports.DictService = DictService;

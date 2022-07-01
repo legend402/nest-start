@@ -8,11 +8,29 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 exports.__esModule = true;
 exports.AuthModule = void 0;
 var common_1 = require("@nestjs/common");
+var jwt_1 = require("@nestjs/jwt");
+var passport_1 = require("@nestjs/passport");
+var user_module_1 = require("../../../../../../../src/controllers/userController/user.module");
+var auth_service_1 = require("./auth.service");
+var constants_1 = require("./constants");
+var jwt_strategy_1 = require("./jwt.strategy");
+var local_strategy_1 = require("./local.strategy");
 var AuthModule = /** @class */ (function () {
     function AuthModule() {
     }
     AuthModule = __decorate([
-        (0, common_1.Module)({})
+        (0, common_1.Module)({
+            imports: [
+                passport_1.PassportModule,
+                jwt_1.JwtModule.register({
+                    secret: constants_1.jwtConstants.secret,
+                    signOptions: { expiresIn: '3h' }
+                }),
+                user_module_1.UserModule,
+            ],
+            providers: [auth_service_1.AuthService, local_strategy_1.LocalStrategy, jwt_strategy_1.JwtStrategy],
+            exports: [auth_service_1.AuthService]
+        })
     ], AuthModule);
     return AuthModule;
 }());

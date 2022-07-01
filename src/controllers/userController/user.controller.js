@@ -47,19 +47,67 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 exports.__esModule = true;
 exports.UserController = void 0;
 var common_1 = require("@nestjs/common");
+var lodash_1 = require("lodash");
+var public_decorator_1 = require("../../common/decorator/public.decorator");
 var UserController = /** @class */ (function () {
-    function UserController(userService) {
+    function UserController(userService, authService) {
         this.userService = userService;
+        this.authService = authService;
     }
     UserController.prototype.register = function (user) {
-        return __awaiter(this, void 0, void 0, function () { return __generator(this, function (_a) {
-            return [2 /*return*/];
-        }); });
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                return [2 /*return*/, this.userService.saveOne(user)];
+            });
+        });
+    };
+    UserController.prototype.getAll = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                return [2 /*return*/, this.userService.findAll()];
+            });
+        });
+    };
+    UserController.prototype.login = function (user) {
+        return __awaiter(this, void 0, void 0, function () {
+            var _a, code, findUser, _b, token;
+            return __generator(this, function (_c) {
+                switch (_c.label) {
+                    case 0: return [4 /*yield*/, this.authService.validateUser(user.name, user.password)];
+                    case 1:
+                        _a = _c.sent(), code = _a.code, findUser = _a.user;
+                        _b = code;
+                        switch (_b) {
+                            case 1: return [3 /*break*/, 2];
+                            case 2: return [3 /*break*/, 4];
+                        }
+                        return [3 /*break*/, 5];
+                    case 2: return [4 /*yield*/, this.authService.certificate(findUser)];
+                    case 3:
+                        token = _c.sent();
+                        return [2 /*return*/, {
+                                token: token,
+                                user: (0, lodash_1.omit)(findUser, ['password'])
+                            }];
+                    case 4: return [2 /*return*/, "\u5BC6\u7801\u4E0D\u6B63\u786E"];
+                    case 5: return [2 /*return*/, "\u7528\u6237\u4E0D\u5B58\u5728"];
+                }
+            });
+        });
     };
     __decorate([
+        (0, public_decorator_1.Public)(),
         (0, common_1.Post)('register'),
         __param(0, (0, common_1.Body)())
     ], UserController.prototype, "register");
+    __decorate([
+        (0, common_1.Get)()
+    ], UserController.prototype, "getAll");
+    __decorate([
+        (0, public_decorator_1.Public)(),
+        (0, common_1.Post)('login'),
+        __param(0, (0, common_1.Body)())
+    ], UserController.prototype, "login");
     UserController = __decorate([
         (0, common_1.Controller)('user')
     ], UserController);

@@ -5,6 +5,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -42,87 +45,44 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.AuthService = void 0;
+exports.DictController = void 0;
 var common_1 = require("@nestjs/common");
-var AuthService = /** @class */ (function () {
-    function AuthService(userService, jwtService) {
-        this.userService = userService;
-        this.jwtService = jwtService;
-        this.userService = userService;
-        this.jwtService = jwtService;
+var crypto_1 = require("crypto");
+var DictController = /** @class */ (function () {
+    function DictController(dictService) {
+        this.dictService = dictService;
     }
-    AuthService.prototype.validateUser = function (username, password) {
+    DictController.prototype.findALl = function (param) {
         return __awaiter(this, void 0, void 0, function () {
-            var user, metaPassword;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.userService.findOne({
-                            where: {
-                                name: username
-                            },
-                            select: [
-                                'age',
-                                'email',
-                                'password',
-                                'name',
-                                'id',
-                                'pictureId',
-                                'authority',
-                                'idCard',
-                            ]
-                        })];
-                    case 1:
-                        user = _a.sent();
-                        if (user) {
-                            metaPassword = user.password;
-                            if (metaPassword === password) {
-                                return [2 /*return*/, {
-                                        code: 1,
-                                        user: user
-                                    }];
-                            }
-                            else {
-                                return [2 /*return*/, {
-                                        code: 2,
-                                        user: null
-                                    }];
-                            }
-                        }
-                        else {
-                            return [2 /*return*/, {
-                                    code: 3,
-                                    user: null
-                                }];
-                        }
-                        return [2 /*return*/];
-                }
+            var _a, pageSize, _b, pageNum;
+            return __generator(this, function (_c) {
+                _a = param.pageSize, pageSize = _a === void 0 ? 10 : _a, _b = param.pageNum, pageNum = _b === void 0 ? 0 : _b;
+                return [2 /*return*/, this.dictService.findMany({
+                        take: pageSize,
+                        skip: pageNum
+                    })];
             });
         });
     };
-    AuthService.prototype.certificate = function (user) {
+    DictController.prototype.addOne = function (dict) {
         return __awaiter(this, void 0, void 0, function () {
-            var signState, token;
             return __generator(this, function (_a) {
-                signState = {
-                    id: user.id,
-                    name: user.name,
-                    password: user.password
-                };
-                try {
-                    token = this.jwtService.sign(signState);
-                    console.log(token);
-                    return [2 /*return*/, token];
-                }
-                catch (_b) {
-                    return [2 /*return*/, '账号或密码错误'];
-                }
-                return [2 /*return*/];
+                (0, crypto_1.randomUUID)().replaceAll('-', '');
+                return [2 /*return*/, this.dictService.saveOne(dict)];
             });
         });
     };
-    AuthService = __decorate([
-        (0, common_1.Injectable)()
-    ], AuthService);
-    return AuthService;
+    __decorate([
+        (0, common_1.Get)('/list'),
+        __param(0, (0, common_1.Param)())
+    ], DictController.prototype, "findALl");
+    __decorate([
+        (0, common_1.Post)('/add'),
+        __param(0, (0, common_1.Body)())
+    ], DictController.prototype, "addOne");
+    DictController = __decorate([
+        (0, common_1.Controller)('dict')
+    ], DictController);
+    return DictController;
 }());
-exports.AuthService = AuthService;
+exports.DictController = DictController;

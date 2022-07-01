@@ -96,7 +96,9 @@ var ValidationPipe = /** @class */ (function () {
             });
         });
     };
+    // eslint-disable-next-line @typescript-eslint/ban-types
     ValidationPipe.prototype.toValidate = function (metatype) {
+        // eslint-disable-next-line @typescript-eslint/ban-types
         var types = [String, Boolean, Number, Array, Object];
         return !types.includes(metatype);
     };

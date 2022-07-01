@@ -6,57 +6,51 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 exports.__esModule = true;
-exports.User = void 0;
-var class_validator_1 = require("class-validator");
+exports.DictItemDto = void 0;
 var typeorm_1 = require("typeorm");
-var User = /** @class */ (function () {
-    function User() {
+var DictItemDto = /** @class */ (function () {
+    function DictItemDto() {
     }
     __decorate([
-        (0, typeorm_1.PrimaryGeneratedColumn)('uuid', {
-            comment: '用户id'
-        })
-    ], User.prototype, "id");
-    __decorate([
-        (0, class_validator_1.IsNotEmpty)(),
-        (0, typeorm_1.Column)()
-    ], User.prototype, "name");
-    __decorate([
-        (0, class_validator_1.IsNotEmpty)(),
-        (0, typeorm_1.Column)({
-            select: false
-        })
-    ], User.prototype, "password");
+        (0, typeorm_1.PrimaryGeneratedColumn)('rowid')
+    ], DictItemDto.prototype, "id");
     __decorate([
         (0, typeorm_1.Column)({
-            "default": null
+            nullable: true,
+            comment: '字典值'
         })
-    ], User.prototype, "email");
+    ], DictItemDto.prototype, "value");
     __decorate([
         (0, typeorm_1.Column)({
-            "default": '3'
+            nullable: true,
+            comment: '中文名称'
         })
-    ], User.prototype, "authority");
+    ], DictItemDto.prototype, "label");
     __decorate([
         (0, typeorm_1.Column)({
-            type: 'int',
-            "default": null
+            comment: '当前组的父级id'
         })
-    ], User.prototype, "age");
+    ], DictItemDto.prototype, "pid");
     __decorate([
         (0, typeorm_1.Column)({
-            type: 'varchar',
-            unique: true
+            comment: '排序'
         })
-    ], User.prototype, "idCard");
+    ], DictItemDto.prototype, "sort");
     __decorate([
         (0, typeorm_1.Column)({
-            "default": null
+            "default": '',
+            comment: '备注'
         })
-    ], User.prototype, "pictureId");
-    User = __decorate([
+    ], DictItemDto.prototype, "desc");
+    __decorate([
+        (0, typeorm_1.Column)({
+            "default": 1,
+            comment: '状态 1:启用 0:禁用'
+        })
+    ], DictItemDto.prototype, "status");
+    DictItemDto = __decorate([
         (0, typeorm_1.Entity)()
-    ], User);
-    return User;
+    ], DictItemDto);
+    return DictItemDto;
 }());
-exports.User = User;
+exports.DictItemDto = DictItemDto;

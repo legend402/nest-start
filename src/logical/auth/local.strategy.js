@@ -1,4 +1,19 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        if (typeof b !== "function" && b !== null)
+            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -42,87 +57,37 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.AuthService = void 0;
+exports.LocalStrategy = void 0;
 var common_1 = require("@nestjs/common");
-var AuthService = /** @class */ (function () {
-    function AuthService(userService, jwtService) {
-        this.userService = userService;
-        this.jwtService = jwtService;
-        this.userService = userService;
-        this.jwtService = jwtService;
+var passport_1 = require("@nestjs/passport");
+var passport_local_1 = require("passport-local");
+var LocalStrategy = /** @class */ (function (_super) {
+    __extends(LocalStrategy, _super);
+    function LocalStrategy(authService) {
+        var _this = _super.call(this) || this;
+        _this.authService = authService;
+        _this.authService = authService;
+        return _this;
     }
-    AuthService.prototype.validateUser = function (username, password) {
+    LocalStrategy.prototype.validate = function (username, password) {
         return __awaiter(this, void 0, void 0, function () {
-            var user, metaPassword;
+            var user;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.userService.findOne({
-                            where: {
-                                name: username
-                            },
-                            select: [
-                                'age',
-                                'email',
-                                'password',
-                                'name',
-                                'id',
-                                'pictureId',
-                                'authority',
-                                'idCard',
-                            ]
-                        })];
+                    case 0: return [4 /*yield*/, this.authService.validateUser(username, password)];
                     case 1:
                         user = _a.sent();
-                        if (user) {
-                            metaPassword = user.password;
-                            if (metaPassword === password) {
-                                return [2 /*return*/, {
-                                        code: 1,
-                                        user: user
-                                    }];
-                            }
-                            else {
-                                return [2 /*return*/, {
-                                        code: 2,
-                                        user: null
-                                    }];
-                            }
+                        if (!user) {
+                            return [2 /*return*/, new common_1.UnauthorizedException()];
                         }
-                        else {
-                            return [2 /*return*/, {
-                                    code: 3,
-                                    user: null
-                                }];
-                        }
-                        return [2 /*return*/];
+                        return [2 /*return*/, user];
                 }
             });
         });
     };
-    AuthService.prototype.certificate = function (user) {
-        return __awaiter(this, void 0, void 0, function () {
-            var signState, token;
-            return __generator(this, function (_a) {
-                signState = {
-                    id: user.id,
-                    name: user.name,
-                    password: user.password
-                };
-                try {
-                    token = this.jwtService.sign(signState);
-                    console.log(token);
-                    return [2 /*return*/, token];
-                }
-                catch (_b) {
-                    return [2 /*return*/, '账号或密码错误'];
-                }
-                return [2 /*return*/];
-            });
-        });
-    };
-    AuthService = __decorate([
+    LocalStrategy = __decorate([
         (0, common_1.Injectable)()
-    ], AuthService);
-    return AuthService;
-}());
-exports.AuthService = AuthService;
+    ], LocalStrategy);
+    return LocalStrategy;
+}((0, passport_1.PassportStrategy)(passport_local_1.Strategy)));
+exports.LocalStrategy = LocalStrategy;

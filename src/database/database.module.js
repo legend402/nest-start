@@ -9,6 +9,8 @@ exports.__esModule = true;
 exports.DatabaseModule = void 0;
 var common_1 = require("@nestjs/common");
 var typeorm_1 = require("@nestjs/typeorm");
+var user_service_1 = require("../../../../../../src/controllers/userController/user.service");
+var user_entity_1 = require("./entity/user.entity");
 var DatabaseModule = /** @class */ (function () {
     function DatabaseModule() {
     }
@@ -27,7 +29,10 @@ var DatabaseModule = /** @class */ (function () {
                     // Nestjs 框架支持配置autoLoadEntities 这一选项，使得每个通过forFeature()注册的实体都会自动添加到配置对象的entities数组中
                     autoLoadEntities: true
                 }),
-            ]
+                typeorm_1.TypeOrmModule.forFeature([user_entity_1.User]),
+            ],
+            providers: [user_service_1.UserService],
+            exports: [user_service_1.UserService]
         })
     ], DatabaseModule);
     return DatabaseModule;

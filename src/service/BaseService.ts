@@ -5,6 +5,7 @@ import {
   RemoveOptions,
   FindOptionsWhere,
   FindOneOptions,
+  FindManyOptions,
 } from 'typeorm';
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
 
@@ -27,7 +28,7 @@ export class BaseService<T> {
     return this.repository.findOne(options);
   }
 
-  async findMany(options?: FindOptionsWhere<T>): Promise<T[]> {
+  async findMany(options?: FindManyOptions<T>): Promise<T[]> {
     return this.repository.find(options);
   }
 

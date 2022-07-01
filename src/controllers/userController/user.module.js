@@ -6,17 +6,21 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 exports.__esModule = true;
-exports.AppService = void 0;
+exports.UserModule = void 0;
 var common_1 = require("@nestjs/common");
-var AppService = /** @class */ (function () {
-    function AppService() {
+var user_service_1 = require("./user.service");
+var typeorm_1 = require("@nestjs/typeorm");
+var user_entity_1 = require("../../database/entity/user.entity");
+var UserModule = /** @class */ (function () {
+    function UserModule() {
     }
-    AppService.prototype.getHello = function () {
-        return 'Hello World!';
-    };
-    AppService = __decorate([
-        (0, common_1.Injectable)()
-    ], AppService);
-    return AppService;
+    UserModule = __decorate([
+        (0, common_1.Module)({
+            providers: [user_service_1.UserService],
+            exports: [user_service_1.UserService],
+            imports: [typeorm_1.TypeOrmModule.forFeature([user_entity_1.User])]
+        })
+    ], UserModule);
+    return UserModule;
 }());
-exports.AppService = AppService;
+exports.UserModule = UserModule;

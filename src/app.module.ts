@@ -1,7 +1,5 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { LoggerMiddleware } from './common/middleware/logger.middleware';
-import { AppController } from './controllers/appController/app.controller';
-import { AppService } from './controllers/appController/app.service';
 import { AuthModule } from './logical/auth/auth.module';
 import { DatabaseModule } from './database/database.module';
 import { UserController } from './controllers/userController/user.controller';
@@ -13,7 +11,7 @@ import { QueryFailedExceptionFilter } from './logical/filters/typeorm-exception.
 import { UserModule } from './controllers/userController/user.module';
 
 @Module({
-  controllers: [AppController, UserController],
+  controllers: [UserController],
   providers: [
     {
       provide: APP_FILTER,
@@ -31,7 +29,6 @@ import { UserModule } from './controllers/userController/user.module';
       provide: APP_INTERCEPTOR,
       useClass: TransformInterceptor,
     },
-    AppService,
   ],
   imports: [UserModule, AuthModule, DatabaseModule],
 })

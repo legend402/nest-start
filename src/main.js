@@ -39,6 +39,8 @@ exports.__esModule = true;
 require("reflect-metadata");
 var core_1 = require("@nestjs/core");
 var app_module_1 = require("./app.module");
+var validationPipe_1 = require("./logical/validate/validationPipe");
+var JwtAuthGuard_1 = require("./logical/auth/JwtAuthGuard");
 function bootstrap() {
     return __awaiter(this, void 0, void 0, function () {
         var app;
@@ -47,7 +49,9 @@ function bootstrap() {
                 case 0: return [4 /*yield*/, core_1.NestFactory.create(app_module_1.AppModule)];
                 case 1:
                     app = _a.sent();
-                    return [4 /*yield*/, app.listen(3000)];
+                    app.useGlobalPipes(new validationPipe_1.ValidationPipe());
+                    app.useGlobalGuards(new JwtAuthGuard_1.JwtAuthGuard(new core_1.Reflector()));
+                    return [4 /*yield*/, app.listen(3010)];
                 case 2:
                     _a.sent();
                     return [2 /*return*/];
