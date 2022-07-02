@@ -9,6 +9,8 @@ import { HttpExceptionFilter } from './logical/filters/http-exception.filter';
 import { AllExceptionsFilter } from './logical/filters/any-exception.filter';
 import { QueryFailedExceptionFilter } from './logical/filters/typeorm-exception.filter';
 import { UserModule } from './controllers/userController/user.module';
+import { DictModule } from './controllers/Dict/DictController/dict.module';
+import { DictItemModule } from './controllers/Dict/DictItemController/dictItem.module';
 
 @Module({
   controllers: [UserController],
@@ -30,7 +32,7 @@ import { UserModule } from './controllers/userController/user.module';
       useClass: TransformInterceptor,
     },
   ],
-  imports: [UserModule, AuthModule, DatabaseModule],
+  imports: [UserModule, AuthModule, DatabaseModule, DictModule, DictItemModule],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

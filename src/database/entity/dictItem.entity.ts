@@ -1,19 +1,18 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { BaseEntity } from './base.entity';
 
 @Entity()
-export class DictItemDto {
-  @PrimaryGeneratedColumn('rowid')
+export class DictItemDto extends BaseEntity {
+  @PrimaryGeneratedColumn('uuid')
   id: number;
 
   @Column({
     nullable: true,
-    unique: true,
     comment: '字典值',
   })
   value: string;
 
   @Column({
-    nullable: true,
     comment: '中文名称',
   })
   label: string;
