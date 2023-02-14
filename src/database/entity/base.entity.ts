@@ -4,15 +4,13 @@ export abstract class BaseEntity {
   @CreateDateColumn({
     name: 'create_time',
     type: "timestamp",
-    default: () => "CURRENT_TIMESTAMP",
     precision: 6,
   })
   createTime!: Date;
 
   @UpdateDateColumn({
     name: 'update_time',
-    type: "timestamp",
-    default: () => "CURRENT_TIMESTAMP",
+    type: 'timestamp',
     precision: 6,
   })
   updateTime!: Date;
