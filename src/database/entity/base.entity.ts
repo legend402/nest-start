@@ -1,11 +1,15 @@
 import { Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 
 export abstract class BaseEntity {
-  @CreateDateColumn()
-  createTime: Date;
+  @CreateDateColumn({
+    name: 'create_time,'
+  })
+  createTime!: Date;
 
-  @UpdateDateColumn()
-  updateTime: Date;
+  @UpdateDateColumn({
+    name: 'update_time,'
+  })
+  updateTime!: Date;
 
   @Column({
     default: 'hyj',
