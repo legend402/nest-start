@@ -4,10 +4,10 @@ export abstract class BaseEntity {
   @CreateDateColumn({
     type: 'timestamp',
   })
-  createTime: string;
+  createTime: Date;
 
   @UpdateDateColumn()
-  updateTime: string;
+  updateTime: Date;
 
   @Column({
     default: 'hyj',
