@@ -2,12 +2,12 @@ import { Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 
 export abstract class BaseEntity {
   @CreateDateColumn({
-    name: 'create_time,'
+    name: 'create_time'
   })
   createTime!: Date;
 
   @UpdateDateColumn({
-    name: 'update_time,'
+    name: 'update_time'
   })
   updateTime!: Date;
 
