@@ -12,7 +12,6 @@ import * as https from 'https'
 const httpsOptions = {
   key: readFileSync(join(process.cwd(), 'ssl.key')),
   cert: readFileSync(join(process.cwd(), 'ssl.pem')),
-
 }
 async function bootstrap() {
   const server = express()
