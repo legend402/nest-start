@@ -24,6 +24,7 @@ export class QueryFailedExceptionFilter implements ExceptionFilter {
       statusCode: HttpStatus.BAD_REQUEST,
       message: `Service Error: ${name}`,
       path: url,
+      success: false,
       timestamp: new Date().toISOString(),
     });
   }

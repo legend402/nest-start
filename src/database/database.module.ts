@@ -4,6 +4,7 @@ import { UserService } from 'src/controllers/userController/user.service';
 import { DictDto } from './entity/dict.entity';
 import { DictItemDto } from './entity/dictItem.entity';
 import { User } from './entity/user.entity';
+import { Upload } from './entity/upload.entity';
 
 @Module({
   imports: [
@@ -19,7 +20,7 @@ import { User } from './entity/user.entity';
       // Nestjs 框架支持配置autoLoadEntities 这一选项，使得每个通过forFeature()注册的实体都会自动添加到配置对象的entities数组中
       autoLoadEntities: true,
     }),
-    TypeOrmModule.forFeature([User, DictDto, DictItemDto]),
+    TypeOrmModule.forFeature([User, DictDto, DictItemDto, Upload]),
   ],
   providers: [UserService],
   exports: [UserService],
