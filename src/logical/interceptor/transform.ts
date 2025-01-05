@@ -27,6 +27,7 @@ export class TransformInterceptor<T>
         data,
         statusCode: 200,
         message: '请求成功',
+        success: true,
         timestamp: new Date().toISOString(),
       })),
     );

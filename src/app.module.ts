@@ -12,6 +12,10 @@ import { UserModule } from './controllers/userController/user.module';
 import { DictModule } from './controllers/Dict/DictController/dict.module';
 import { DictItemModule } from './controllers/Dict/DictItemController/dictItem.module';
 import { ArticleModule } from './controllers/Article/article.module';
+import { UploadModule } from 'src/controllers/Upload/upload.module';
+import { MulterModule } from '@nestjs/platform-express';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
   controllers: [UserController],
@@ -33,7 +37,19 @@ import { ArticleModule } from './controllers/Article/article.module';
       useClass: TransformInterceptor,
     },
   ],
-  imports: [UserModule, AuthModule, DatabaseModule, DictModule, DictItemModule, ArticleModule],
+  imports: [
+    UserModule,
+    AuthModule,
+    DatabaseModule,
+    DictModule,
+    DictItemModule,
+    UploadModule,
+    ArticleModule,
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '../uploads'),
+      serveRoot: '/uploads',
+    })
+  ],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

@@ -10,8 +10,8 @@ import { ExpressAdapter } from '@nestjs/platform-express';
 import * as http from 'http'
 import * as https from 'https'
 // const httpsOptions = {
-//   key: readFileSync(join(process.cwd(), 'ssl.key')),
-//   cert: readFileSync(join(process.cwd(), 'ssl.pem')),
+  // key: readFileSync(join(process.cwd(), 'ssl.key')),
+  // cert: readFileSync(join(process.cwd(), 'ssl.pem')),
 // }
 async function bootstrap() {
   const server = express()

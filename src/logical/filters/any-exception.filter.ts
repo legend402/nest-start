@@ -22,6 +22,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
       statusCode: status,
       message: `Service Error: ${exception}`,
       path: request.url,
+      success: false,
       timestamp: new Date().toISOString(),
     });
   }
