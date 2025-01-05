@@ -1,7 +1,8 @@
 import { IsNotEmpty } from 'class-validator';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { ArticleDto } from './article.entity';
 
-@Entity()
+@Entity('user')
 export class User {
   // 自增
   @PrimaryGeneratedColumn('uuid', {
@@ -45,4 +46,7 @@ export class User {
     default: null,
   })
   pictureId: number;
+
+  @OneToMany(() => ArticleDto, article => article.user)
+  articles: ArticleDto[];
 }

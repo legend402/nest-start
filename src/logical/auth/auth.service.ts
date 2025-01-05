@@ -61,7 +61,6 @@ export class AuthService {
     };
     try {
       const token = this.jwtService.sign(signState);
-      console.log(token);
       return token;
     } catch {
       return '账号或密码错误';

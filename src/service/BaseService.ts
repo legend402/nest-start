@@ -32,8 +32,8 @@ export class BaseService<T> {
     return this.repository.find(options);
   }
 
-  async findAll(): Promise<T[]> {
-    return this.repository.find();
+  async findAll(options?: FindManyOptions<T>): Promise<T[]> {
+    return this.repository.find(options);
   }
 
   async removeOne(entity: T, options: RemoveOptions): Promise<T> {

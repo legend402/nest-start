@@ -9,10 +9,10 @@ import * as express from 'express';
 import { ExpressAdapter } from '@nestjs/platform-express';
 import * as http from 'http'
 import * as https from 'https'
-const httpsOptions = {
-  key: readFileSync(join(process.cwd(), 'ssl.key')),
-  cert: readFileSync(join(process.cwd(), 'ssl.pem')),
-}
+// const httpsOptions = {
+//   key: readFileSync(join(process.cwd(), 'ssl.key')),
+//   cert: readFileSync(join(process.cwd(), 'ssl.pem')),
+// }
 async function bootstrap() {
   const server = express()
   const app = await NestFactory.create(AppModule, new ExpressAdapter(server));
@@ -21,6 +21,6 @@ async function bootstrap() {
   app.useGlobalGuards(new JwtAuthGuard(new Reflector()));
   await app.init();
   http.createServer(server).listen(3010);
-  https.createServer(httpsOptions, server).listen(443);
+  // https.createServer(httpsOptions, server).listen(443);
 }
 bootstrap();

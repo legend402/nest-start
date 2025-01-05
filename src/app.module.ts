@@ -11,6 +11,7 @@ import { QueryFailedExceptionFilter } from './logical/filters/typeorm-exception.
 import { UserModule } from './controllers/userController/user.module';
 import { DictModule } from './controllers/Dict/DictController/dict.module';
 import { DictItemModule } from './controllers/Dict/DictItemController/dictItem.module';
+import { ArticleModule } from './controllers/Article/article.module';
 
 @Module({
   controllers: [UserController],
@@ -32,7 +33,7 @@ import { DictItemModule } from './controllers/Dict/DictItemController/dictItem.m
       useClass: TransformInterceptor,
     },
   ],
-  imports: [UserModule, AuthModule, DatabaseModule, DictModule, DictItemModule],
+  imports: [UserModule, AuthModule, DatabaseModule, DictModule, DictItemModule, ArticleModule],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

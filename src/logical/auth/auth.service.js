@@ -110,7 +110,6 @@ var AuthService = /** @class */ (function () {
                 };
                 try {
                     token = this.jwtService.sign(signState);
-                    console.log(token);
                     return [2 /*return*/, token];
                 }
                 catch (_b) {

@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { omit } from 'lodash';
 import { User } from 'src/database/entity/user.entity';
 import { AuthService } from 'src/logical/auth/auth.service';
@@ -10,7 +10,7 @@ export class UserController {
   constructor(
     private readonly userService: UserService,
     private readonly authService: AuthService,
-  ) {}
+  ) { }
 
   @Public()
   @Post('register')
@@ -18,9 +18,14 @@ export class UserController {
     return this.userService.saveOne(user);
   }
 
-  @Get()
+  @Get('list')
   async getAll() {
-    return this.userService.findAll();
+    return this.userService.findAll({ relations: ['articles'] });
+  }
+
+  @Get('queryById')
+  async fineOne(@Param() params: User) {
+    return this.userService.findAll({ relations: ['articles'] });
   }
 
   @Public()
