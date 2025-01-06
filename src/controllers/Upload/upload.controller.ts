@@ -5,7 +5,7 @@ import { diskStorage } from "multer";
 import { join } from "path";
 import { Public } from "src/common/decorator/public.decorator";
 import { UploadService } from "src/controllers/Upload/upload.service";
-import { Upload } from "src/database/entity/upload.entity";
+import { UploadDto } from "src/database/entity/upload.entity";
 import { getFileInfo } from "src/utils";
 
 @Controller('upload')
@@ -31,13 +31,13 @@ export class UploadController {
       })
     })
   )
-  async upload(@UploadedFiles() files: Express.Multer.File[], @Body() body) {
+  async upload(@UploadedFiles() files: Express.Multer.File[]) {
     const res = await this.uploadService.saveMany(files.map(item => ({
       fileSize: item.size,
       filePath: item.path,
       filename: item.filename,
       fileOriginalName: item.originalname
-    } as Upload)))
+    } as UploadDto)))
     
     return res
   }

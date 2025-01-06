@@ -2,7 +2,7 @@ import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "t
 import { User } from "./user.entity";
 import { BaseEntity } from "./base.entity";
 
-@Entity('article')
+@Entity()
 export class ArticleDto extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;

@@ -16,6 +16,7 @@ import { UploadModule } from 'src/controllers/Upload/upload.module';
 import { MulterModule } from '@nestjs/platform-express';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { MenuModule } from 'src/controllers/Menu/menu.module';
 
 @Module({
   controllers: [UserController],
@@ -45,6 +46,7 @@ import { join } from 'path';
     DictItemModule,
     UploadModule,
     ArticleModule,
+    MenuModule,
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '../uploads'),
       serveRoot: '/uploads',
