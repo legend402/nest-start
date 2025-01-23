@@ -1,24 +1,31 @@
-import { Injectable } from '@nestjs/common';
+import {Injectable, UnauthorizedException} from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
-import { User } from 'src/database/entity/user.entity';
 import { jwtConstants } from './constants';
+import {Request} from "express";
+import {UserService} from "../../controllers/userController/user.service";
 
 @Injectable()
-export class JwtStrategy extends PassportStrategy(Strategy) {
-  constructor() {
+export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
+  constructor(
+    private readonly userService: UserService,
+  ) {
     super({
-      jwtFromRequest: ExtractJwt.fromHeader('token'),
+      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
       secretOrKey: jwtConstants.secret,
     });
+    this.userService = userService;
   }
 
-  async validate(payload: User) {
+  async validate(payload: any) {
+    console.log('jwt.strategy', payload);
+    const { username } = payload
+    if (!username) {
+      throw new UnauthorizedException('token令牌非法，请重新登录');
+    }
     return {
-      id: payload.id,
-      name: payload.name,
-      password: payload.password,
-    };
+      username
+    }
   }
 }

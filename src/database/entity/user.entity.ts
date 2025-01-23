@@ -8,11 +8,14 @@ export class User {
   @PrimaryGeneratedColumn('uuid', {
     comment: '用户id',
   })
-  id: number;
+  userId: number;
 
   @IsNotEmpty()
   @Column()
-  name: string;
+  username: string;
+
+  @Column()
+  realName: string;
 
   @IsNotEmpty()
   @Column({
@@ -28,7 +31,7 @@ export class User {
   @Column({
     default: '3',
   })
-  authority: string;
+  accessCodes: string;
 
   @Column({
     type: 'int',
@@ -45,7 +48,7 @@ export class User {
   @Column({
     default: null,
   })
-  pictureId: number;
+  avatar: number;
 
   @OneToMany(() => ArticleDto, article => article.user)
   articles: ArticleDto[];

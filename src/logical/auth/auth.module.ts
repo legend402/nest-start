@@ -6,17 +6,20 @@ import { AuthService } from './auth.service';
 import { jwtConstants } from './constants';
 import { JwtStrategy } from './jwt.strategy';
 import { LocalStrategy } from './local.strategy';
+import { BlacklistService } from "./blacklist.service";
 
 @Module({
   imports: [
     PassportModule,
     JwtModule.register({
       secret: jwtConstants.secret,
-      signOptions: { expiresIn: '3h' }, // token 过期时效
+      signOptions: {
+        expiresIn: '3h',
+      }, // token 过期时效
     }),
     UserModule,
   ],
-  providers: [AuthService, LocalStrategy, JwtStrategy],
-  exports: [AuthService],
+  providers: [AuthService, JwtStrategy, BlacklistService],
+  exports: [AuthService, BlacklistService],
 })
 export class AuthModule {}

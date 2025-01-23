@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Res, UploadedFile, UploadedFiles, UseInterceptors } from "@nestjs/common";
+import { Controller, Get, Param, Post, Res, UploadedFiles, UseInterceptors } from "@nestjs/common";
 import { AnyFilesInterceptor } from "@nestjs/platform-express";
 import { Response } from "express";
 import { diskStorage } from "multer";
@@ -52,7 +52,7 @@ export class UploadController {
     })
     if (!file) {
       return res.json({
-        statusCode: 200,
+        code: 200,
         message: '文件不存在',
         success: false,
         timestamp: new Date().toISOString(),

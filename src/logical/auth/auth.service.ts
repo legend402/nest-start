@@ -2,12 +2,15 @@ import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from 'src/controllers/userController/user.service';
 import { User } from 'src/database/entity/user.entity';
+import {BlacklistService} from "./blacklist.service";
+import {jwtConstants} from "./constants";
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly userService: UserService,
     private readonly jwtService: JwtService,
+    private readonly blacklistService: BlacklistService,
   ) {
     this.userService = userService;
     this.jwtService = jwtService;
@@ -19,16 +22,17 @@ export class AuthService {
   ): Promise<{ code: number; user: User | null }> {
     const user = await this.userService.findOne({
       where: {
-        name: username,
+        username,
       },
       select: [
         'age',
         'email',
         'password',
-        'name',
-        'id',
-        'pictureId',
-        'authority',
+        'username',
+        'realName',
+        'userId',
+        'avatar',
+        'accessCodes',
         'idCard',
       ],
     });
@@ -55,8 +59,8 @@ export class AuthService {
 
   async certificate(user: User) {
     const signState = {
-      id: user.id,
-      name: user.name,
+      userId: user.userId,
+      username: user.username,
       password: user.password,
     };
     try {
@@ -64,6 +68,29 @@ export class AuthService {
       return token;
     } catch {
       return '账号或密码错误';
+    }
+  }
+
+  async getUserInfo(token: string) {
+    const userInfo = this.jwtService.verify(token, {
+      secret: jwtConstants.secret,
+    });
+    if (!userInfo) {
+      return null;
+    }
+    return this.userService.findOne({
+      where: {
+        userId: userInfo.userId,
+      },
+    });
+  }
+
+  async logout(token: string) {
+    try {
+      this.blacklistService.addToBlacklist(token);
+      return '登出成功';
+    } catch (error) {
+      return '登出失败';
     }
   }
 }

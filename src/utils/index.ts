@@ -1,3 +1,7 @@
+import { Request } from "express";
+import {TOKEN_KEY} from "../constants";
+import {Like} from "typeorm";
+
 export const getFileInfo = (file: Express.Multer.File) => {
   return {
     originalName: file.originalname,
@@ -9,4 +13,16 @@ export const getFileInfo = (file: Express.Multer.File) => {
     path: file.path,
     buffer: file.buffer,
   };
+}
+
+export const getToken = (req: Request) => {
+  return req.header(TOKEN_KEY);
+}
+
+export function getRequestTokenUser(req: Request) {
+  return req.user as { userId: string, username: string, password: string };
+}
+
+export function safeLike(str: string) {
+  return str ? Like(`%${str}%`) : undefined;
 }

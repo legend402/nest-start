@@ -19,7 +19,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
     Logger.log(`${request.url} - ${message}`, '非正常接口请求');
 
     response.status(status).json({
-      statusCode: status,
+      code: status,
       message: message,
       path: request.url,
       success: false,

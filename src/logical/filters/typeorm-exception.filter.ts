@@ -21,7 +21,7 @@ export class QueryFailedExceptionFilter implements ExceptionFilter {
     const { name } = exception;
 
     response.status(HttpStatus.BAD_REQUEST).json({
-      statusCode: HttpStatus.BAD_REQUEST,
+      code: HttpStatus.BAD_REQUEST,
       message: `Service Error: ${name}`,
       path: url,
       success: false,

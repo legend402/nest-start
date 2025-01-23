@@ -25,7 +25,7 @@ export class TransformInterceptor<T>
     return next.handle().pipe(
       map((data) => ({
         data,
-        statusCode: 200,
+        code: 0,
         message: '请求成功',
         success: true,
         timestamp: new Date().toISOString(),

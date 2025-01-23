@@ -1,9 +1,12 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import {Body, Controller, Get, Param, Post, Req, UseGuards} from '@nestjs/common';
 import { omit } from 'lodash';
 import { User } from 'src/database/entity/user.entity';
 import { AuthService } from 'src/logical/auth/auth.service';
 import { UserService } from './user.service';
 import { Public } from '../../common/decorator/public.decorator';
+import {Request} from "express";
+import {getToken} from "../../utils";
+import {AuthGuard} from "@nestjs/passport";
 
 @Controller('user')
 export class UserController {
@@ -15,6 +18,9 @@ export class UserController {
   @Public()
   @Post('register')
   async register(@Body() user: User) {
+    if (user.username && !user.realName) {
+      user.realName = user.username
+    }
     return this.userService.saveOne(user);
   }
 
@@ -32,14 +38,14 @@ export class UserController {
   @Post('login')
   async login(@Body() user: User) {
     const { code, user: findUser } = await this.authService.validateUser(
-      user.name,
+      user.username,
       user.password,
     );
     switch (code) {
       case 1:
         const token = await this.authService.certificate(findUser);
         return {
-          token,
+          accessToken: token,
           user: omit(findUser, ['password']),
         };
       case 2:
@@ -47,5 +53,41 @@ export class UserController {
       default:
         return `用户不存在`;
     }
+  }
+  /**
+   * 根据 token 获取用户信息
+   * */
+  @Get('info')
+  async info(@Req() req: Request) {
+    const token = getToken(req)
+    if (token) {
+      const user = await this.authService.getUserInfo(token)
+      return omit(user, ['password'])
+    }
+    return {};
+  }
+
+  /**
+   * 获取codes
+   */
+  @Get('codes')
+  async codes(@Req() req: Request) {
+    const token = getToken(req)
+    if (token) {
+      const user = await this.authService.getUserInfo(token)
+      return user.accessCodes?.split(',') || []
+    }
+  }
+  /**
+   * 登出
+   * */
+  @Public()
+  @Post('logout')
+  async logout(@Req() req: Request) {
+    const token = getToken(req)
+    if (token) {
+      return await this.authService.logout(token)
+    }
+    return '登出成功'
   }
 }
