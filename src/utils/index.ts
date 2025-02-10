@@ -1,6 +1,7 @@
 import { Request } from "express";
 import {TOKEN_KEY} from "../constants";
 import {Like} from "typeorm";
+import {TokenUserMes} from "../types/common";
 
 export const getFileInfo = (file: Express.Multer.File) => {
   return {
@@ -20,7 +21,7 @@ export const getToken = (req: Request) => {
 }
 
 export function getRequestTokenUser(req: Request) {
-  return req.user as { userId: string, username: string, password: string };
+  return req.user as TokenUserMes;
 }
 
 export function safeLike(str: string) {

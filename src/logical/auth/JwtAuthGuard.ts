@@ -22,10 +22,10 @@ export class jwtAuth extends AuthGuard('jwt') {
     if (isPublic) return true;
     const req = context.switchToHttp().getRequest()
     const user = this.jwtService.verify(getToken(req), { secret: jwtConstants.secret })
-
     if (!user) {
       throw new UnauthorizedException('Token 已过期, 请重新登录');
     }
-    return super.canActivate(context);
+    req.user = user;
+    return true;
   }
 }

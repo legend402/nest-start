@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import {Injectable, Req} from '@nestjs/common';
 import {
   Repository,
   SaveOptions,
@@ -7,6 +7,7 @@ import {
   FindOneOptions,
   FindManyOptions,
 } from 'typeorm';
+import { IPaginationOptions, Pagination, paginate } from 'nestjs-typeorm-paginate';
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
 
 @Injectable()
@@ -22,6 +23,10 @@ export class BaseService<T> {
 
   async saveMany(entities: T[], options?: SaveOptions): Promise<T[]> {
     return this.repository.save(entities, options);
+  }
+
+  async paginate(options: IPaginationOptions, addition?: FindManyOptions<T> | FindOptionsWhere<T>): Promise<Pagination<T>> {
+    return paginate<T>(this.repository, options, addition);
   }
 
   async findOne(options?: FindOneOptions<T>): Promise<T> {
@@ -55,7 +60,10 @@ export class BaseService<T> {
     let updateResult = 1;
     await this.repository
       .update(conditions, newValue)
-      .catch(() => (updateResult = 0));
+      .catch((err) => {
+        console.log(err)
+        updateResult = 0
+      });
     return updateResult;
   }
 }

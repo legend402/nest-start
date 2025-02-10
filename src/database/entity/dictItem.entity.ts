@@ -4,7 +4,7 @@ import { BaseEntity } from './base.entity';
 @Entity()
 export class DictItemDto extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
-  id: number;
+  id: string;
 
   @Column({
     nullable: true,

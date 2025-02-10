@@ -1,7 +1,9 @@
-import { Body, Controller, Delete, Get, Post, Query } from "@nestjs/common";
+import {Body, Controller, Delete, Get, Post, Put, Query} from "@nestjs/common";
 import { Public } from "src/common/decorator/public.decorator";
 import { MenuService } from "src/controllers/Menu/Menu.service";
 import { MenuDto } from "src/database/entity/Menu.entity";
+import {travelTree} from "../../utils/tree";
+import {isEmpty} from "lodash";
 
 @Controller('menu')
 export class MenuController {
@@ -9,25 +11,29 @@ export class MenuController {
     private readonly menuService: MenuService
   ) { }
 
-  @Public()
   @Post('add')
   async add(@Body() menu: MenuDto) {
-    console.log(menu);
     return this.menuService.saveOne(menu);
   }
 
-  @Public()
+  @Put('edit')
+  async edit(@Body() menu: MenuDto) {
+    return this.menuService.update({
+      id: menu.id,
+    }, menu);
+  }
+
   @Get('tree')
-  async getTree(@Query('id') id: number) {
+  async getTree(@Query('id') id: string) {
     
     // 从数据库中获取所有菜单数据
     const allMenus = await this.menuService.findMany();
     if (allMenus.length === 0) {
-      throw new Error('No menus found');
+      return [];
     }
 
     // 将菜单数据存储在一个映射中，以菜单的 id 作为键
-    const menuMap = new Map<number, MenuDto>();
+    const menuMap = new Map<string, MenuDto>();
     allMenus.forEach(menu => {
       menuMap.set(menu.id, menu);
     });
@@ -51,34 +57,43 @@ export class MenuController {
         }
       }
     });
-
-    return id ? (menuMap.has(+id) ? [menuMap.get(+id)] : []) : rootMenus;
+    travelTree(rootMenus, (item) => {
+      if (isEmpty(item.children)) {
+        item.isLeaf = true;
+      }
+    })
+    console.log(menuMap)
+    return id ? (menuMap.has(id) ? [menuMap.get(id)] : []) : rootMenus;
   }
 
-  @Public()
   @Delete('delete')
-  async delete(@Body() menu: MenuDto) {
-    const { id } = menu;
+  async delete(@Query('id') id: string) {
+    if (!id) {
+      return '请选择需要删除数据的id';
+    }
+    console.log(id)
     // 从数据库中获取所有菜单数据
     const allMenus = await this.getTree(id);
-    const promises = [];
-    // 遍历菜单数据，删除所有子菜单
-    const deleteMenus = (menus: MenuDto[]) => {
-      menus.forEach(menu => {
-        if (menu.children && menu.children.length > 0) {
-          deleteMenus(menu.children);
-        }
-        promises.push(this.menuService.delete({
-          id: menu.id,
-        }));
-      });
-    };
-    deleteMenus(allMenus)
-    try {
-      await Promise.all(promises);
-      return '删除成功';
-    } catch (error) {
-      return error;
-    }
+    console.log(allMenus);
+    return 'ok'
+    // const promises = [];
+    // // 遍历菜单数据，删除所有子菜单
+    // const deleteMenus = (menus: MenuDto[]) => {
+    //   menus.forEach(menu => {
+    //     if (menu.children && menu.children.length > 0) {
+    //       deleteMenus(menu.children);
+    //     }
+    //     promises.push(this.menuService.delete({
+    //       id: menu.id,
+    //     }));
+    //   });
+    // };
+    // deleteMenus(allMenus)
+    // try {
+    //   await Promise.all(promises);
+    //   return '删除成功';
+    // } catch (error) {
+    //   return error;
+    // }
   }
 }

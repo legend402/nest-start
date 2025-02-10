@@ -18,11 +18,10 @@ export class QueryFailedExceptionFilter implements ExceptionFilter {
     const response = ctx.getResponse<Response>();
     const request = ctx.getRequest<Request>();
     const { url } = request;
-    const { name } = exception;
 
     response.status(HttpStatus.BAD_REQUEST).json({
       code: HttpStatus.BAD_REQUEST,
-      message: `Service Error: ${name}`,
+      message: `Service Error: ${exception}`,
       path: url,
       success: false,
       timestamp: new Date().toISOString(),

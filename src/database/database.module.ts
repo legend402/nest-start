@@ -7,6 +7,7 @@ import { User } from './entity/user.entity';
 import { ArticleDto } from './entity/article.entity';
 import { UploadDto } from './entity/upload.entity';
 import { MenuDto } from 'src/database/entity/Menu.entity';
+import {UserSubscriber} from "../logical/subscribe/userSubscribe";
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { MenuDto } from 'src/database/entity/Menu.entity';
       synchronize: true,
       // Nestjs 框架支持配置autoLoadEntities 这一选项，使得每个通过forFeature()注册的实体都会自动添加到配置对象的entities数组中
       autoLoadEntities: true,
+      subscribers: [UserSubscriber]
     }),
     TypeOrmModule.forFeature([User, DictDto, DictItemDto, UploadDto, ArticleDto, MenuDto]),
   ],

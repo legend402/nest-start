@@ -1,15 +1,16 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, OneToMany, BaseEntity } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, OneToMany } from "typeorm";
+import {BaseEntity} from "./base.entity";
 
 @Entity()
 export class MenuDto extends BaseEntity {
-    @PrimaryGeneratedColumn()
-    id: number;
+    @PrimaryGeneratedColumn('uuid')
+    id: string;
 
     @Column()
     name: string;
 
     @Column({ nullable: true })
-    parentId: number;
+    parentId: string;
 
     @ManyToOne(() => MenuDto, menu => menu.children)
     @JoinColumn({ name: 'parentId' })

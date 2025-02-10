@@ -13,7 +13,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse();
     const request = ctx.getRequest();
-    console.log(exception)
+    
     const status = getStatus(exception);
     response.status(status).json({
       code: status,
@@ -35,6 +35,7 @@ function getStatus(exception) {
     return HttpStatus.INTERNAL_SERVER_ERROR;
   }
 }
+
 function getMessage(exception) {
    if (exception instanceof TokenExpiredError) {
     return "Token已过期, 请重新登录";

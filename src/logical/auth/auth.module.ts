@@ -5,7 +5,6 @@ import { UserModule } from 'src/controllers/userController/user.module';
 import { AuthService } from './auth.service';
 import { jwtConstants } from './constants';
 import { JwtStrategy } from './jwt.strategy';
-import { LocalStrategy } from './local.strategy';
 import { BlacklistService } from "./blacklist.service";
 
 @Module({

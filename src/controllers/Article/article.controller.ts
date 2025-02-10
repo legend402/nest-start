@@ -13,6 +13,7 @@ import { ArticleService } from './article.service';
 import {Request} from "express";
 import {getRequestTokenUser, safeLike} from "../../utils";
 import {UserService} from "../userController/user.service";
+import { paginate, Pagination, IPaginationOptions } from 'nestjs-typeorm-paginate';
 
 @Controller('article')
 export class ArticleController {
@@ -24,17 +25,17 @@ export class ArticleController {
   @Get('/list')
   async findALl(@Query() param: ArticleListType) {
     const { pageSize = 10, pageNum = 1, title } = param;
-    const res = await this.articleService.findAll({
+    return this.articleService.paginate({
+      page: pageNum,
+      limit: pageSize,
+    }, {
+      order: {
+        createTime: 'desc',
+      },
       where: {
         title: safeLike(title),
       },
     })
-    return {
-      items: res.slice((pageNum - 1) * pageSize, pageNum * pageSize),
-      total: res.length,
-      pageSize: +pageSize,
-      pageNum: +pageNum,
-    };
   }
 
   @Get('/queryById')

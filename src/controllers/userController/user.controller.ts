@@ -1,12 +1,13 @@
-import {Body, Controller, Get, Param, Post, Req, UseGuards} from '@nestjs/common';
-import { omit } from 'lodash';
+import {Body, Controller, Get, Param, Post, Put, Query, Req, UseGuards} from '@nestjs/common';
+import {omit, pick} from 'lodash';
 import { User } from 'src/database/entity/user.entity';
 import { AuthService } from 'src/logical/auth/auth.service';
 import { UserService } from './user.service';
 import { Public } from '../../common/decorator/public.decorator';
 import {Request} from "express";
-import {getToken} from "../../utils";
+import {getRequestTokenUser, getToken} from "../../utils";
 import {AuthGuard} from "@nestjs/passport";
+import {UserListType} from "./user.interface";
 
 @Controller('user')
 export class UserController {
@@ -25,13 +26,24 @@ export class UserController {
   }
 
   @Get('list')
-  async getAll() {
-    return this.userService.findAll({ relations: ['articles'] });
+  async getAll(@Query() param: UserListType) {
+    const { pageSize = 10, pageNum = 1, username } = param;
+    return this.userService.paginate({
+      page: pageNum,
+      limit: pageSize,
+    }, {
+      where: {
+        username: username,
+      }
+    });
   }
 
   @Get('queryById')
-  async fineOne(@Param() params: User) {
-    return this.userService.findAll({ relations: ['articles'] });
+  async fineOne(@Query('id') id: string) {
+    return this.userService.findOne({
+      relations: ['articles'],
+      where: { userId: id },
+    });
   }
 
   @Public()
@@ -62,7 +74,7 @@ export class UserController {
     const token = getToken(req)
     if (token) {
       const user = await this.authService.getUserInfo(token)
-      return omit(user, ['password'])
+      return user
     }
     return {};
   }
@@ -89,5 +101,15 @@ export class UserController {
       return await this.authService.logout(token)
     }
     return '登出成功'
+  }
+  
+  @Put('edit')
+  async edit(@Body() user: User, @Req() req: Request) {
+    return this.userService.update(
+      {
+        userId: user.userId,
+      },
+      pick(user, ['username', 'realName', 'sex', 'accessCodes'])
+    );
   }
 }

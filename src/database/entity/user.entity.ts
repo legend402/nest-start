@@ -8,7 +8,7 @@ export class User {
   @PrimaryGeneratedColumn('uuid', {
     comment: '用户id',
   })
-  userId: number;
+  userId: string;
 
   @IsNotEmpty()
   @Column()
@@ -17,7 +17,6 @@ export class User {
   @Column()
   realName: string;
 
-  @IsNotEmpty()
   @Column({
     select: false,
   })
@@ -29,7 +28,7 @@ export class User {
   email: string;
 
   @Column({
-    default: '3',
+    default: 'user',
   })
   accessCodes: string;
 
@@ -41,7 +40,7 @@ export class User {
 
   @Column({
     type: 'varchar',
-    unique: true,
+    default: null,
   })
   idCard: string;
 
@@ -49,6 +48,12 @@ export class User {
     default: null,
   })
   avatar: number;
+
+  @Column({
+    default: null,
+    comment: '性别 dictCode: sex',
+  })
+  sex: string;
 
   @OneToMany(() => ArticleDto, article => article.user)
   articles: ArticleDto[];

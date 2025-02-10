@@ -16,9 +16,14 @@ export abstract class BaseEntity {
   updateTime!: Date;
 
   @Column({
-    default: 'hyj',
+    default: null,
   })
   createBy: string;
+
+  @Column({
+    default: null,
+  })
+  updateBy: string;
 
   @Column({
     default: 1,

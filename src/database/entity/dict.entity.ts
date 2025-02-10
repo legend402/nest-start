@@ -1,10 +1,11 @@
 import { randomUUID } from 'crypto';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {Column, Entity, OneToMany, PrimaryGeneratedColumn} from 'typeorm';
 import { BaseEntity } from './base.entity';
+import {DictItemDto} from "./dictItem.entity";
 @Entity()
 export class DictDto extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
-  id: number;
+  id: string;
 
   @Column({
     comment: '字典项名称',
@@ -22,10 +23,4 @@ export class DictDto extends BaseEntity {
     default: '',
   })
   dictDesc: string;
-
-  @Column({
-    comment: '当前字典组给子项的父级id',
-    default: randomUUID().replace(/-/g, ''),
-  })
-  pid: string;
 }
